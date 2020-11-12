@@ -1,0 +1,33 @@
+(setq carts '((1 "Six") (2 "Six") (3 "Six") (4 "Six") (1 "Seven") (2 "Seven") (3 "Seven") (4 "Seven") (1 "Eight") (2 "Eight") (3 "Eight") (4 "Eight") (1 "Nine") (2 "Nine") (3 "Nine") (4 "Nine") (1 "Ten") (2 "Ten") (3 "Ten") (4 "Ten") (1 "B") (2 "B") (3 "B") (4 "B") (1 "Q") (2 "Q") (3 "Q") (4 "Q") (1 "K") (2 "K") (3 "K") (4 "K") (1 "A") (2 "A") (3 "A") (4 "A")))
+(setq point '(("Six" 6) ("Seven" 7) ("Eight" 8) ("Nine" 9) ("Ten" 10) ("B" 11) ("Q" 12) ("K" 13) ("A" 14)))
+(setq player1 '((1 "Ten") (2 "Six") (3 "K") (1 "B")))
+(setq player2 '((2 "Eight") (4 "A") (1 "Seven") (4 "Six")))
+
+(defun getForNum (player num)
+(cond
+    ((NULL player) NIL)
+    ((eq num (CAAR player)) (cons (CAR player) (getForNum (CDR player) num)))
+    (T (getForNum (CDR player) num))
+)
+)
+(defun getPoint (playerCart point)
+(cond
+    ((string-equal playerCart (CAAR point)) (CADAR point))
+    (T (getPoint playerCart (CDR point)))
+)
+)
+(defun score (player)
+(cond 
+    ((NULL player) 0)
+    (T (+ (getPoint (CADAR player) point) (score (CDR player))))
+)
+)
+(defun whoWin (p1 p2 num)
+(let ((pl1 (getForNum p1 num)) (pl2 (getForNum p2 num))))
+(cond
+    ((> (score pl1) (score pl2)) "Win player 1")
+    ((> (score pl2) (score pl1)) "Win player 2")
+    (T "None win")
+)
+)
+(print(whoWin player1 player2 1))
